@@ -1,0 +1,36 @@
+.form-control {
+	border: 0;
+	background-color: $grey;
+
+	&:focus {
+		background-color: $grey;
+	}
+
+	&::placeholder {
+		text-transform: lowercase;
+	}
+}
+
+.btn {
+	text-transform: lowercase;
+	padding: 0.375rem 1.5rem;
+
+	&.btn-primary, .btn-secondary {
+		color: $white;
+
+		&:hover {
+			color: $white;
+		}
+	}
+
+	&.btn-outline {
+		color: $white;
+		background-color: transparent;
+		border: 1px solid $white;
+
+		&:hover {
+			background-color: $white;
+			color: $primary;
+		}
+	}
+}

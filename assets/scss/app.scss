@@ -1,0 +1,14 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700,900');
+
+// Variables
+@import "variables.scss";
+
+// Packes
+@import "~bootstrap/scss/bootstrap";
+@import "~aos/dist/aos.css";
+
+// Our styles
+@import "typography.scss";
+@import "main.scss";
+@import "forms.scss";

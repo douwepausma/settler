@@ -1,0 +1,53 @@
+{
+  "name": "gbu-template",
+  "version": "1.2.0",
+  "description": "Bootstrap 4 Joomla! template",
+  "main": "webpack.dev.js",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.16",
+    "@fortawesome/free-brands-svg-icons": "^5.8.0",
+    "@fortawesome/free-regular-svg-icons": "^5.8.0",
+    "@fortawesome/free-solid-svg-icons": "^5.8.0",
+    "aos": "^2.3.4",
+    "autoprefixer": "^8.6.5",
+    "base-plugins": "^1.0.0",
+    "bootstrap": "^4.3.1",
+    "css-loader": "^0.28.11",
+    "expose-loader": "^0.7.5",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.11",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
+    "node-sass": "^4.11.0",
+    "popper.js": "^1.14.7",
+    "postcss-loader": "^2.1.6",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.20.3",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-imports": "^1.5.1",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.26.3",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "file-loader": "^1.1.11",
+    "image-webpack-loader": "^4.6.0",
+    "mini-css-extract-plugin": "^0.4.5",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "terser-webpack-plugin": "^1.2.3",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "scripts": {
+    "development": "webpack --config webpack.dev.js",
+    "production": "webpack --config webpack.prod.js"
+  },
+  "author": "Douwe Pausma",
+  "license": "ISC"
+}
