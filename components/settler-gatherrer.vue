@@ -39,7 +39,7 @@
           </form>
           <div class="gatherrer-stepper">
             <button class="btn btn-primary" @click="nextStep()">Step back</button>
-            <button class="btn btn-primary"><i class="fas fa-download mr-2"></i>Download</button>
+            <filewriter></filewriter>
           </div>
         </div>
 		</div>
@@ -47,6 +47,7 @@
 </template>
 <script>
   import adddependency from './add-dependency.vue';
+  import filewriter from './file-writer.vue';
 
   export default {
     name: "settlergatherrer",
@@ -56,7 +57,8 @@
      }
     },
     components: {
-      adddependency
+      adddependency,
+      filewriter
     },
     methods: {
         addDependency(dependency) {
