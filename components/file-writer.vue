@@ -1,5 +1,5 @@
 <template>
-  <a  href="#" class="btn btn-primary" id="download" @click="downloadProduct(prepareData(packageJson))" download="package.json"><i class="fas fa-download mr-2"></i>Download</a>
+  <a  href="#" class="btn btn-primary" id="download" @click="downloadProduct(packageJson)" download="package.json"><i class="fas fa-download mr-2"></i>Download</a>
 </template>
 <script>
   export default {
@@ -35,39 +35,8 @@
       }
     },
     methods: {
-      prepareData(packageJson) {
-        var $data;
-$data = 
-`{
-  "name": "` + packageJson.name + `",
-  "version": "` + packageJson.version + `",
-  "description": "` + packageJson.description + `",
-  "dependencies": {
-    `;
-
-for (var dependency in packageJson.dependencies) {
-  var name = Object.keys(dependency);
-  $data += `"` + dependency + `": "` + packageJson.dependencies[dependency] + `",
-    `;
-}
-
-  $data +=
-`},
-  "dependencies": {
-    `;
-for (var dependency in packageJson.devDependencies) {
-  var name = Object.keys(dependency);
-  $data += `"` + dependency + `": "` + packageJson.devDependencies[dependency] + `",
-    `;
-}
-  $data +=
-`},
-  "author": "` + packageJson.author + `",
-  "license": "` + packageJson.license + `"
-}`;
-        return $data;
-      },
       downloadProduct($packageJson) {
+        $packageJson = JSON.stringify($packageJson,null, 2);
         $('#download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent($packageJson));
       }
     }
