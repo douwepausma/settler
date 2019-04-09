@@ -37,7 +37,6 @@
     	}, 500),
 
     	onSubmit(dependency) {
-        dependency.devDependency = false;
 		    this.$emit('dependency-submitted', dependency)
 		    this.searchParams.text = null,
 		    this.dependencyHits = null

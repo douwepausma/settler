@@ -5,27 +5,70 @@
           <adddependency @dependency-submitted="addDependency">
           </adddependency>
     		  <div class="gatherrer-basket">
-            <div class="basket-dependency collapseIsActive" :id="dependency.name + 'Dependency'" v-for="dependency in dependencies" :key="dependency.dependencyName">
+            <div v-if="packageJSON.dependencies[0]">
+              <span class="dependencyType">dependencies</span>
+              <div class="basket-dependency collapseIsActive" :id="dependency.name + 'Dependency'" v-for="(dependency, key) in packageJSON.dependencies" :key="dependency.dependencyName">
 
-              <!-- Info -->
-              <a class="basket-dependencyName" :href="dependency.links.homepage" target="_blank">{{ dependency.name }}</a>
-              <span class="basket-dependencyVersion badge badge-secondary">{{ dependency.version }}</span>
-              <a :href="dependency.links.npm" target="_blank"><i class="fab fa-npm"></i></a>
-              <a :href="dependency.links.repository" target="_blank"><i class="fab fa-github"></i></a>
-              <span class="basket-dependencyDelete" @click="removeDependency(dependency.name)"><i class="fas fa-times"></i></span>
-              <span class="basket-dependencyShowAdvanced collapsed" @click="collapseIsActive('#' + dependency.name + 'Advanced')" data-toggle="collapse" :data-target="'#' + dependency.name + 'Advanced'" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-angle-up"></i></span>
+                <!-- Info -->
+                <a class="basket-dependencyName" :href="dependency.links.homepage" target="_blank">{{ dependency.name }}</a>
+                <span class="basket-dependencyVersion badge badge-secondary">{{ dependency.version }}</span>
+                <a :href="dependency.links.npm" target="_blank"><i class="fab fa-npm"></i></a>
+                <a :href="dependency.links.repository" target="_blank"><i class="fab fa-github"></i></a>
+                <span class="basket-dependencyDelete" @click="$delete(packageJSON.dependencies, key);"><i class="fas fa-times"></i></span>
+                <span class="basket-dependencyShowAdvanced collapsed" @click="collapseIsActive('#' + dependency.name + 'Advanced')" data-toggle="collapse" :data-target="'#' + dependency.name + 'Advanced'" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-angle-up"></i></span>
 
-              <!-- Advanced options -->
-              <div class="basket-dependencyAdvanced collapse" :id="dependency.name + 'Advanced'">
-                <div class="form-group">
-                  <input type="checkbox" value="1" v-model="dependency.devDependency">
-                  {{ dependency }}
+                <!-- Advanced options -->
+                <div class="basket-dependencyAdvanced collapse" :id="dependency.name + 'Advanced'">
+                  <div class="dependencyAdvanced-inner">
+                    <div class="form-inline">
+                      <div class="form-group mr-3">
+                        <label>
+                          <input type="checkbox" class="mr-2" @click="switchDependecyType(key, packageJSON.dependencies, dependency, packageJSON.devDependencies)">devDependency
+                        </label>
+                      </div>
+                      <div class="form-group mr-3">
+                        <label>
+                          <input type="checkbox" class="mr-2" :checked="dependency.version.endsWith('^')" @click="toggleLatestVersion('dependencies', key, dependency.version)">latest version
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                test
+              </div>
+            </div>
+            <div v-if="packageJSON.devDependencies[0]">
+              <span class="dependencyType">dev dependencies</span>
+              <div class="basket-dependency collapseIsActive" :id="packageJSON.devDependencies.name + 'Dependency'" v-for="(dependency, key) in packageJSON.devDependencies" :key="packageJSON.devDependencies.dependencyName">
+
+                <!-- Info -->
+                <a class="basket-dependencyName" :href="dependency.links.homepage" target="_blank">{{ dependency.name }}</a>
+                <span class="basket-dependencyVersion badge badge-secondary">{{ dependency.version }}</span>
+                <a :href="dependency.links.npm" target="_blank"><i class="fab fa-npm"></i></a>
+                <a :href="dependency.links.repository" target="_blank"><i class="fab fa-github"></i></a>
+                <span class="basket-dependencyDelete" @click="$delete(packageJSON.devDependencies, key);"><i class="fas fa-times"></i></span>
+                <span class="basket-dependencyShowAdvanced collapsed" @click="collapseIsActive('#' + dependency.name + 'Advanced')" data-toggle="collapse" :data-target="'#' + dependency.name + 'Advanced'" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-angle-up"></i></span>
+
+                <!-- Advanced options -->
+                <div class="basket-dependencyAdvanced collapse" :id="dependency.name + 'Advanced'">
+                  <div class="dependencyAdvanced-inner">
+                    <div class="form-inline">
+                      <div class="form-group mr-3">
+                        <label>
+                          <input type="checkbox" class="mr-2" checked @click="switchDependecyType(key, packageJSON.devDependencies, dependency, packageJSON.dependencies)">devDependency
+                        </label>
+                      </div>
+                      <div class="form-group mr-3">
+                        <label>
+                          <input type="checkbox" class="mr-2" :checked="dependency.version.endsWith('^')" @click="toggleLatestVersion('devDependencies', key, dependency.version)">latest version
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <img v-if="!dependencies[0]" src="/dist/images/no-packages.svg" width="300" height="auto" class="m-auto">
+          <img v-if="!packageJSON.dependencies[0] && !packageJSON.devDependencies[0]" src="/dist/images/no-packages.svg" width="300" height="auto" class="m-auto">
           <div class="gatherrer-stepper">
             <a href="#" class="btn btn-link">Pre-made dependency lists</a>
             <button class="btn btn-primary" @click="nextStep()">Next step</button>
@@ -82,26 +125,13 @@
     name: "settlergatherrer",
     data() {
       return {
-        dependencies: [],
         packageJSON: {
           name: 'projectName',
           version: '1.0.0',
           description: 'package.json generated by www.settler.dev',
           // main: 'webpack.dev.js',
-          dependencies: {
-            "autoprefixer": "^8.6.5",
-            "base-plugins": "^1.0.0",
-            "bootstrap": "^4.3.1",
-            "css-loader": "^0.28.11",
-            "expose-loader": "^0.7.5"
-          },
-          devDependencies: {
-            "babel-cli": "^6.26.0",
-            "babel-core": "^6.26.3",
-            "babel-loader": "^7.1.5",
-            "babel-plugin-transform-imports": "^1.5.1",
-            "babel-preset-env": "^1.7.0",
-          },
+          dependencies: [],
+          devDependencies: [],
           // scripts: {
           //  "development": "webpack --config webpack.dev.js",
           //  "production": "webpack --config webpack.prod.js"
@@ -117,11 +147,27 @@
     },
     methods: {
         addDependency(dependency) {
-          this.dependencies.push(dependency);
+          this.packageJSON.dependencies.push(dependency);
         },
-        removeDependency(dependencyName) {
-          var removeIndex = this.dependencies.map(function(item){return item.dependencyName;}).indexOf(dependencyName);
-          this.dependencies.splice(removeIndex, 1);
+        // removeDependency(dependencyName) {
+        //   var removeIndex = this.dependencies.map(function(item){return item.dependencyName;}).indexOf(dependencyName);
+        //   this.dependencies.splice(removeIndex, 1);
+        // },
+        switchDependecyType(index, dependencyTypeOld, dependency, dependencyTypeNew) {
+          dependencyTypeNew.push(dependency);
+          this.$delete(dependencyTypeOld, index);
+        },
+        toggleLatestVersion(dependencyType, index, version) {
+          if (version.endsWith('^')) {
+            version = version.replace('^', '');
+            this.packageJSON[dependencyType][index].version = version;
+            console.log(version);
+          } else {
+            version += '^';
+            this.packageJSON[dependencyType][index].version = version;
+            console.log(version);
+
+          }
         },
         nextStep() {
           $('.step-1').toggleClass('done');
@@ -137,9 +183,4 @@
         }
     }
   }
-  // $('document').ready(function() {
-  //   $('.basket-dependencyShowAdvanced').on('click', function() {
-  //     $(this).parent().toggleClass('collapseActive');
-  //   });
-  // });
 </script>

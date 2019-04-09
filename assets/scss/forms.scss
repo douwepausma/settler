@@ -1,9 +1,9 @@
 .form-control {
 	border: 0;
-	background-color: $grey;
+	background-color: $light-grey;
 
 	&:focus {
-		background-color: $grey;
+		background-color: $light-grey;
 	}
 
 	&::placeholder {
@@ -33,4 +33,8 @@
 			color: $primary;
 		}
 	}
+}
+
+label {
+	font-weight: bold;
 }

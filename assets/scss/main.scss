@@ -63,7 +63,7 @@ body {
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: 0 110%;
-	transition: all 1s ease-in-out;
+	transition: left 1s ease-in-out;
 
 	&.slide {
 		left: -100%;
@@ -107,6 +107,7 @@ body {
 		padding: 15px;
 		box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 		overflow-x: hidden;
+		color: $dark-grey;
 
 		@include media-breakpoint-up(md) {
 			max-width: 600px;
@@ -135,6 +136,14 @@ body {
 
 		// Dependency list
 		.gatherrer-basket {
+			.dependencyType {
+				display: block;
+				padding-bottom: 3px;
+				padding-left: 15px;
+				padding-right: 15px;
+				// border-bottom: 1px solid $light-grey;
+				font-weight: bold;
+			}
 			.basket-dependency {
 				display: flex;
 				justify-content: space-between;
@@ -147,10 +156,10 @@ body {
 				margin: .25rem 0;
 
 				&:not(.collapseIsActive) {
-					background-color: $grey;
+					background-color: $light-grey;
 				}
 				&:hover {
-					background-color: $grey;
+					background-color: $light-grey;
 				}
 
 				a {
@@ -163,6 +172,9 @@ body {
 				.basket-dependencyVersion {
 					color: $white;
 				}
+				.basket-dependencyDelete {
+					cursor: pointer;
+				}
 				.basket-dependencyShowAdvanced {
 					cursor: pointer;
 					transition: all .25s ease-in-out;
@@ -174,6 +186,16 @@ body {
 				}
 				.basket-dependencyAdvanced {
 					width: 100%;
+
+					.dependencyAdvanced-inner {
+						border-top: 1px solid #e0e0e0;
+						margin-top: 8px;
+						padding-top: 8px;
+
+						.form-group {
+							margin-bottom: .25rem;
+						}
+					}
 				}
 			}
 		}
@@ -257,10 +279,21 @@ body {
 		// Gatherrer stepper
 		.gatherrer-stepper {
 			margin-top: auto;
-			display: flex;
 			justify-content: space-between;
 			border-top: 1px solid #dee2e6;
 			padding-top: 15px;
+
+			.btn {
+				width: 100%;
+			}
+			
+			@include media-breakpoint-up(sm) {
+				display: flex;
+
+				.btn {
+					width: initial;
+				}			
+			}
 		}
 	}
 }
