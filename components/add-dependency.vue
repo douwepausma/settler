@@ -27,16 +27,17 @@
 
     		$.ajax({
     			dataType: 'json',
-    			url: 'http://registry.npmjs.com/-/v1/search',
+    			url: 'https://registry.npmjs.com/-/v1/search',
     			data: vm.searchParams,
     			complete: function(data) {
     				vm.loading = false;
     				vm.dependencyHits = data.responseJSON.objects;
     			}.bind(vm)
     		})
-    	}, 500),
+    	}, 250),
 
     	onSubmit(dependency) {
+        dependency.devDependency = false;
 		    this.$emit('dependency-submitted', dependency)
 		    this.searchParams.text = null,
 		    this.dependencyHits = null

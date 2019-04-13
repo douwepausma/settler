@@ -1,5 +1,5 @@
 <template>
-  <a  href="#" class="btn btn-primary" id="download" @click="downloadProduct()" download="package.json"><i class="fas fa-download mr-2"></i>Download</a>
+  <a  href="#" class="btn btn-primary mt-3 mt-sm-0" id="download" @click="downloadProduct()" download="package.json"><i class="fas fa-download mr-2"></i>Download</a>
 </template>
 <script>
   export default {
@@ -7,31 +7,25 @@
     props: ['packageJSON'],
     data() {
       return {
-        finalPackageJSON: {
-          name: this.packageJSON.name,
-          version: this.packageJSON.version,
-          description: this.packageJSON.description,
-          dependencies: {},
-          devDependencies: {},
-          author: this.packageJSON.author,
-          license: this.packageJSON.license
-        }
+        
       }
     },
     methods: {
       downloadProduct() {
         var packageJSON = JSON.parse(JSON.stringify(this.packageJSON));
+        var finalPackageJSON = jQuery.extend(true, {}, packageJSON);;
+        finalPackageJSON.dependencies = {};
+        finalPackageJSON.devDependencies = {};
 
         packageJSON.dependencies.forEach(function(dependency) {
-          this.finalPackageJSON.dependencies[dependency.name] = dependency.version;
-        }.bind(this));
+          finalPackageJSON.dependencies[dependency.name] = dependency.version;
+        });
         packageJSON.devDependencies.forEach(function(dependency) {
-          this.finalPackageJSON.devDependencies[dependency.name] = dependency.version;
-        }.bind(this));
+          finalPackageJSON.devDependencies[dependency.name] = dependency.version;
+        });
 
-        var finalPackageJSON = JSON.stringify(this.finalPackageJSON, null, 2);
+        finalPackageJSON = JSON.stringify(finalPackageJSON, null, 2);
         $('#download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(finalPackageJSON));
-        console.log('done');
       }
     }
   }

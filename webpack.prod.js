@@ -1,6 +1,8 @@
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const compiler = require('vue-template-compiler')
 const webpack = require("webpack");
 const path = require('path');
 
@@ -28,6 +30,11 @@ module.exports = {
     path: __dirname + "/dist",
     filename: "js/[name].js",
   },
+  resolve: {
+    alias: {
+      vue: 'vue/dist/vue.js'
+    }
+  },
   module: {
     rules: [
       {
@@ -41,31 +48,24 @@ module.exports = {
          }]
       },
       {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-             presets: ['env']
-          }
-        }
+        test: /\.vue$/,
+        loader: 'vue-loader'
       },
+      // this will apply to both plain `.js` files
+      // AND `<script>` blocks in `.vue` files
+      {
+        test: /\.js$/,
+        loader: 'babel-loader'
+      },
+      // this will apply to both plain `.css` files
+      // AND `<style>` blocks in `.vue` files
       {
         test: /\.(s*)css$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'vue-style-loader',
           'css-loader',
-          { 
-            loader: 'postcss-loader',
-            options: { 
-              ident: 'postcss',
-              plugins: [
-                require('autoprefixer')
-              ] 
-            } 
-          },
-          'sass-loader',
-        ],
+          'sass-loader'
+        ]
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
@@ -87,8 +87,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: '/css/master.css'
-    }),
+    })
   ],
 }

@@ -1,7 +1,20 @@
 
-h1, h2 ,h3 ,h4 {
+h1, h2 ,h3 ,h4, h5 {
 	font-weight: 700;
 	color: $primary;
+}
+
+h2 {
+	font-size: 2.5rem;
+}
+
+.hr-custom {
+	height: 9px;
+	border-radius: 4px;
+	width: 40px;
+	background-color: $primary;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 }
 
 .page-title {
@@ -31,7 +44,10 @@ h1, h2 ,h3 ,h4 {
 	}
 }
 
-
 .display-1, .display-2, .display-3, .display-4 {
 	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.align-fa-with-text {
+	vertical-align: -2px;
 }

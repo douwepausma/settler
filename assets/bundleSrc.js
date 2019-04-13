@@ -28,11 +28,11 @@ new Vue({
 
 // FontAwesome
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
-import { faTimes, faDownload, faTrash, faPlus, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faDownload, faTrash, faPlus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faNpm, faGithub } from '@fortawesome/free-brands-svg-icons'
-import {  } from '@fortawesome/free-regular-svg-icons'
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons'
 
-library.add(faTimes, faDownload, faTrash, faNpm, faGithub, faPlus, faAngleUp )
+library.add(faTimes, faDownload, faTrash, faNpm, faGithub, faPlus, faAngleUp, faAngleDown, faQuestionCircle )
 
 dom.watch()
 

@@ -24,13 +24,29 @@
 	}
 
 	&.btn-outline {
-		color: $white;
-		background-color: transparent;
 		border: 1px solid $white;
+		color: $white;
 
 		&:hover {
 			background-color: $white;
 			color: $primary;
+		}
+
+		&.btn-primary {
+			border: 1px solid $primary;
+			color: $primary;
+
+			&:hover {
+				background-color: $primary;
+				color: $white;
+			}
+		}
+
+		background-color: transparent;
+	}
+	&.btn-link {
+		&:hover, &:active, &:focus {
+			text-decoration: none;
 		}
 	}
 }

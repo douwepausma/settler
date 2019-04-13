@@ -7,7 +7,7 @@
     		  <div class="gatherrer-basket">
             <div v-if="packageJSON.dependencies[0]">
               <span class="dependencyType">dependencies</span>
-              <div class="basket-dependency collapseIsActive" :id="dependency.name + 'Dependency'" v-for="(dependency, key) in packageJSON.dependencies" :key="dependency.dependencyName">
+              <div class="basket-dependency collapseIsActive" :id="makeSafeForCSS(dependency.name) + 'Dependency'" v-for="(dependency, key) in packageJSON.dependencies" :key="dependency.dependencyName">
 
                 <!-- Info -->
                 <a class="basket-dependencyName" :href="dependency.links.homepage" target="_blank">{{ dependency.name }}</a>
@@ -15,15 +15,15 @@
                 <a :href="dependency.links.npm" target="_blank"><i class="fab fa-npm"></i></a>
                 <a :href="dependency.links.repository" target="_blank"><i class="fab fa-github"></i></a>
                 <span class="basket-dependencyDelete" @click="$delete(packageJSON.dependencies, key);"><i class="fas fa-times"></i></span>
-                <span class="basket-dependencyShowAdvanced collapsed" @click="collapseIsActive('#' + dependency.name + 'Advanced')" data-toggle="collapse" :data-target="'#' + dependency.name + 'Advanced'" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-angle-up"></i></span>
+                <span class="basket-dependencyShowAdvanced collapsed" @click="collapseIsActive('#' + makeSafeForCSS(dependency.name) + 'Advanced')" data-toggle="collapse" :data-target="'#' + makeSafeForCSS(dependency.name) + 'Advanced'" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-angle-up"></i></span>
 
                 <!-- Advanced options -->
-                <div class="basket-dependencyAdvanced collapse" :id="dependency.name + 'Advanced'">
+                <div class="basket-dependencyAdvanced collapse" :id="makeSafeForCSS(dependency.name) + 'Advanced'">
                   <div class="dependencyAdvanced-inner">
                     <div class="form-inline">
                       <div class="form-group mr-3">
                         <label>
-                          <input type="checkbox" class="mr-2" @click="switchDependecyType(key, packageJSON.dependencies, dependency, packageJSON.devDependencies)">devDependency
+                          <input type="checkbox" :name="dependency.name" class="mr-2" @click="switchDependecyType(key, 0)">devDependency
                         </label>
                       </div>
                       <div class="form-group mr-3">
@@ -46,15 +46,15 @@
                 <a :href="dependency.links.npm" target="_blank"><i class="fab fa-npm"></i></a>
                 <a :href="dependency.links.repository" target="_blank"><i class="fab fa-github"></i></a>
                 <span class="basket-dependencyDelete" @click="$delete(packageJSON.devDependencies, key);"><i class="fas fa-times"></i></span>
-                <span class="basket-dependencyShowAdvanced collapsed" @click="collapseIsActive('#' + dependency.name + 'Advanced')" data-toggle="collapse" :data-target="'#' + dependency.name + 'Advanced'" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-angle-up"></i></span>
+                <span class="basket-dependencyShowAdvanced collapsed" @click="collapseIsActive('#' + makeSafeForCSS(dependency.name) + 'Advanced')" data-toggle="collapse" :data-target="'#' + makeSafeForCSS(dependency.name) + 'Advanced'" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-angle-up"></i></span>
 
                 <!-- Advanced options -->
-                <div class="basket-dependencyAdvanced collapse" :id="dependency.name + 'Advanced'">
+                <div class="basket-dependencyAdvanced collapse" :id="makeSafeForCSS(dependency.name) + 'Advanced'">
                   <div class="dependencyAdvanced-inner">
                     <div class="form-inline">
                       <div class="form-group mr-3">
                         <label>
-                          <input type="checkbox" class="mr-2" checked @click="switchDependecyType(key, packageJSON.devDependencies, dependency, packageJSON.dependencies)">devDependency
+                          <input type="checkbox" class="mr-2" checked :name="dependency.name" checked @click="switchDependecyType(key, 1)">devDependency
                         </label>
                       </div>
                       <div class="form-group mr-3">
@@ -68,9 +68,10 @@
               </div>
             </div>
           </div>
-          <img v-if="!packageJSON.dependencies[0] && !packageJSON.devDependencies[0]" src="/dist/images/no-packages.svg" width="300" height="auto" class="m-auto">
+          <img v-if="!packageJSON.dependencies[0] && !packageJSON.devDependencies[0]" src="/dist/images/no-packages.svg"  class="no-packages-image">
           <div class="gatherrer-stepper">
-            <a href="#" class="btn btn-link">Pre-made dependency lists</a>
+            <!-- <a href="#" class="btn btn-link">Pre-made dependency lists</a> -->
+            <a href="#help-modal" class="btn btn-link px-3" data-toggle="modal"><i class="far fa-question-circle mr-1"></i>help</a>
             <button class="btn btn-primary" @click="nextStep()">Next step</button>
           </div>
         </div>
@@ -149,13 +150,18 @@
         addDependency(dependency) {
           this.packageJSON.dependencies.push(dependency);
         },
-        // removeDependency(dependencyName) {
-        //   var removeIndex = this.dependencies.map(function(item){return item.dependencyName;}).indexOf(dependencyName);
-        //   this.dependencies.splice(removeIndex, 1);
-        // },
-        switchDependecyType(index, dependencyTypeOld, dependency, dependencyTypeNew) {
-          dependencyTypeNew.push(dependency);
-          this.$delete(dependencyTypeOld, index);
+        switchDependecyType(index, direction) {
+          if(!direction) {
+            var from = this.packageJSON.dependencies;
+            var to = this.packageJSON.devDependencies;
+          } else {
+            var from = this.packageJSON.devDependencies;
+            var to = this.packageJSON.dependencies;
+          }
+          
+          var dependency = from[index];
+          to.push(dependency);
+          this.$delete(from, index);
         },
         toggleLatestVersion(dependencyType, index, version) {
           if (version.endsWith('^')) {
@@ -173,12 +179,20 @@
           $('.step-1').toggleClass('done');
           $('.settler-hills').toggleClass('slide');
         },
-        collapseIsActive($dependencyElement) {
-          $($dependencyElement).on("show.bs.collapse", function(){
-            $($dependencyElement).parent().removeClass('collapseIsActive');
+        collapseIsActive(dependencyElement) {
+          $(dependencyElement).on("show.bs.collapse", function(){
+            $(dependencyElement).parent().removeClass('collapseIsActive');
           });
-          $($dependencyElement).on("hidden.bs.collapse", function(){
-            $($dependencyElement).parent().addClass('collapseIsActive');
+          $(dependencyElement).on("hidden.bs.collapse", function(){
+            $(dependencyElement).parent().addClass('collapseIsActive');
+          });
+        },
+        makeSafeForCSS(name) {
+          return name.replace(/[^a-z0-9]/g, function(s) {
+              var c = s.charCodeAt(0);
+              if (c == 32) return '-';
+              if (c >= 65 && c <= 90) return '_' + s.toLowerCase();
+              return '__' + ('000' + c.toString(16)).slice(-4);
           });
         }
     }
