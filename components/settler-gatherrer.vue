@@ -22,9 +22,7 @@
                   <div class="dependencyAdvanced-inner">
                     <div class="form-inline">
                       <div class="form-group mr-3">
-                        <label>
-                          <input type="checkbox" :name="dependency.name" class="mr-2" @click="switchDependecyType(key, 0)">devDependency
-                        </label>
+                        <button :name="dependency.name" class="btn btn-primary btn-sm mr-2" @click="switchDependecyType(key, 0)">devDependency</button>
                       </div>
                       <div class="form-group mr-3">
                         <label>
@@ -53,9 +51,7 @@
                   <div class="dependencyAdvanced-inner">
                     <div class="form-inline">
                       <div class="form-group mr-3">
-                        <label>
-                          <input type="checkbox" class="mr-2" checked :name="dependency.name" checked @click="switchDependecyType(key, 1)">devDependency
-                        </label>
+                        <button :name="dependency.name" class="btn btn-primary btn-sm mr-2" @click="switchDependecyType(key, 1)">dependency</button>
                       </div>
                       <div class="form-group mr-3">
                         <label>

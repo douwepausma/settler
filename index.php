@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/dist/css/master.css" rel="stylesheet">
     <link href="/favicon.svg" rel="shortcut icon">
+    <title>settler - online package.json generator</title>
   </head>
   <body id="page">
     <div id="settler" class="full-page">
@@ -53,7 +54,7 @@
             built and designed by <a href="https://github.com/douwepausma" class="text-white" target="_blank">@douwepausma</a> with Vue
           </div>
           <div class="col-12 col-md-3 text-md-right footer-links">
-            <a href="https://github.com/douwepausma" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://github.com/douwepausma/settler" target="_blank"><i class="fab fa-github"></i></a>
           </div>
         </div>
       </div>
